@@ -1,43 +1,22 @@
 pipeline {
   agent none
-  libraries {
-    lib("SharedLibs")
-  }
   stages {
-    stage('Get Kernel') {
+    stage('One') {
       agent any
       steps {
-        script {
-          try {
-            KERNEL_VERSION = sh (script: "uname -r", returnStdout: true)
-          } catch(err) {
-            echo "CAUGHT ERROR: ${err}"
-            throw err
-          }
-        }
-        
+        echo 'Stage One - Step 1'
       }
     }
-    stage('Say Kernel') {
+    stage('Checkpoint') {
+      steps {
+        checkpoint 'Checkpoint'
+      }
+    }
+    stage('Two') {
       agent any
       steps {
-        echo "${KERNEL_VERSION}"
+        echo 'Stage Two - Step 1'
       }
     }
-    stage('Shared Lib') {
-         steps {
-             helloWorld("Jenkins")
-         }
-      }
-  }
-  environment {
-    MY_NAME = 'Mary'
-  }
-  post {
-    aborted {
-      echo 'Why didn\'t you push my button?'
-      
-    }
-    
   }
 }
