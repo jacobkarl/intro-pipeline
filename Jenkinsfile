@@ -1,5 +1,8 @@
 pipeline {
   agent none
+  libraries {
+    lib("SharedLibs")
+  }
   stages {
     stage('Get Kernel') {
       agent any
@@ -21,6 +24,11 @@ pipeline {
         echo "${KERNEL_VERSION}"
       }
     }
+    stage('Shared Lib') {
+         steps {
+             helloWorld("Jenkins")
+         }
+      }
   }
   environment {
     MY_NAME = 'Mary'
@@ -31,8 +39,5 @@ pipeline {
       
     }
     
-  }
-  parameters {
-    string(name: 'Name', defaultValue: 'whoever you are', description: 'Who should I say hi to?')
   }
 }
