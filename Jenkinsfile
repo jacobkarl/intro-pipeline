@@ -11,6 +11,7 @@ pipeline {
           }
         }
         stage('Deploy') {
+          agent any
           input {
             message 'Which Version?'
             id 'Deploy'
