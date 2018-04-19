@@ -24,6 +24,12 @@ v1.3''', description: 'What to deploy?')
             echo "Deploying ${APP_VERSION}."
           }
         }
+        stage('Test scope') {
+          agent any
+          steps {
+            echo "APP_VERSION ${APP_VERSION}!"
+          }
+        }
       }
     }
   }
