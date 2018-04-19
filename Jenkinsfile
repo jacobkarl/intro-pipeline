@@ -1,14 +1,18 @@
 pipeline {
-  agent any
+  agent none
   stages {
     stage('Say Hello') {
       parallel {
-        stage('Say Hello') {
+        stage('Say name variable') {
+          agent any
           steps {
-            echo 'Hello World!'
+            echo "Hello ${MY_NAME}!"
           }
         }
       }
     }
+  }
+  environment {
+    MY_NAME = 'Mary'
   }
 }
