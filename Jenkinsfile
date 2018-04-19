@@ -1,55 +1,24 @@
 pipeline {
   agent none
   stages {
-    stage('Say Hello') {
-      parallel {
-        stage('Say name variable') {
-          agent any
-          steps {
-            echo "Hello ${params.Name}!"
-            echo "Hello ${MY_NAME}!"
+    stage('Get Kernel') {
+      agent any
+      steps {
+        script {
+          try {
+            KERNEL_VERSION = sh (script: "uname -r", returnStdout: true)
+          } catch(err) {
+            echo "CAUGHT ERROR: ${err}"
+            throw err
           }
         }
-        stage('Deploy') {
-          options {
-            timeout(time: 10, unit: 'SECONDS')
-          }
-          input {
-            message 'Which Version?'
-            id 'Deploy'
-            parameters {
-              choice(name: 'APP_VERSION', choices: '''v1.1
-v1.2
-v1.3''', description: 'What to deploy?')
-            }
-          }
-          steps {
-            echo "Deploying ${APP_VERSION}."
-          }
-        }
-        stage('Test scope') {
-          agent any
-          steps {
-            echo 'APP_VERSION value!'
-          }
-        }
+        
       }
     }
-    stage('Deploy') {
-      options {
-        timeout(time: 10, unit: 'SECONDS')
-      }
-      input {
-        message 'Which Version?'
-        id 'Deploy'
-        parameters {
-          choice(name: 'APP_VERSION', choices: '''v1.1
-v1.2
-v1.3''', description: 'What to deploy?')
-        }
-      }
+    stage('Say Kernel') {
+      agent any
       steps {
-        echo "Deploying ${APP_VERSION}."
+        echo "${KERNEL_VERSION}"
       }
     }
   }
